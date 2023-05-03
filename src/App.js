@@ -1,13 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
-import { getAll } from './services/anecdoteService'
+import { getAnecdotes } from './services/anecdote'
 
 const App = () => {
   const { status, data } = useQuery({
     queryKey: ['anecdotes'],
-    queryFn: getAll,
-    retry: false
+    queryFn: getAnecdotes,
+    retry: false,
+    refetchOnWindowFocus: false,
   })
 
   const handleVote = (anecdote) => {
