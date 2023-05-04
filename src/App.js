@@ -1,10 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import AnecdoteForm from './components/AnecdoteForm'
+import { setNotiAction, useNotiDispatch } from './components/NotiContext'
 import Notification from './components/Notification'
 import { getAnecdotes, updateAnecdote } from './services/anecdote'
 
 const App = () => {
   const queryClient = useQueryClient()
+  const dispatch = useNotiDispatch()
 
   const { status, data } = useQuery({
     queryKey: ['anecdotes'],
@@ -26,6 +28,7 @@ const App = () => {
       votes: anecdote.votes + 1
     }
     updateAnecdoteMutation.mutate(updatedAnecdote)
+    dispatch(setNotiAction(`anecdote "${anecdote.content}" voted`))
   }
 
   if (status === 'loading') {

@@ -1,3 +1,6 @@
+import { useContext, useEffect, useState } from "react"
+import NotiContext, { clearNotiAction } from "./NotiContext"
+
 const Notification = () => {
   const style = {
     border: 'solid',
@@ -5,13 +8,28 @@ const Notification = () => {
     borderWidth: 1,
     marginBottom: 5
   }
-  
-  if (true) return null
+
+  const [showNoti, setShowNoti] = useState(false)
+  const [noti, notiDispatch] = useContext(NotiContext)
+
+  useEffect(() => {
+    if (noti) {
+      setShowNoti(true)
+      const timer = setTimeout(() => {
+        setShowNoti(false)
+        notiDispatch(clearNotiAction())
+      }, 5000)
+      
+      return () => clearTimeout(timer)
+    }
+  }, [noti])
 
   return (
-    <div style={style}>
-      
-    </div>
+    showNoti ?
+      <div style={style}>
+        {noti}
+      </div>
+      : null
   )
 }
 
